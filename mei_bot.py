@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 import os
 
-path = os.getcwd() + '\\bases'
+path = os.getcwd() + '/bases'
 print(path)
 
 fp = webdriver.FirefoxProfile()
@@ -94,7 +94,7 @@ while True:
     dia = timestamp.tm_mday
 
     try:
-        os.rename(path + '\\relatorio_mei.csv', path + '\\mei_cnae_municipios_{:04d}{:02d}{:02d}.csv'.format(ano, mes, dia))
+        os.rename(path + '/relatorio_mei.csv', path + '/mei_cnae_municipios_{:04d}{:02d}{:02d}.csv'.format(ano, mes, dia))
         print('Arquivo renomeado')
     except FileExistsError as e:
         print(e)
@@ -103,4 +103,4 @@ while True:
 
     now = datetime.now()
     print('{}-{}-{} {}:{}:{}'.format(now.day, now.month, now.year, now.hour, now.minute, now.second))
-    time.sleep(60 * 60)
+    time.sleep(60 * 60 * 4)
