@@ -12,5 +12,5 @@ TODO
 
 ### Prerequisites
 
-Install [geckodriver for Firefox](https://github.com/mozilla/geckodriver/releases)
-Install [selenium](https://selenium-python.readthedocs.io/installation.html)
+######  Install [geckodriver for Firefox](https://github.com/mozilla/geckodriver/releases)
+###### Install [selenium](https://selenium-python.readthedocs.io/installation.html)
