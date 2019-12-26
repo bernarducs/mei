@@ -6,7 +6,6 @@ V: 0.0.0.0
 
 import time
 import os
-import json
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException, \
@@ -15,7 +14,7 @@ from selenium.common.exceptions import NoSuchElementException, \
 
 class MeiBot:
 
-    def __init__(self, uf='PE', headless=True, delay_hours=1):
+    def __init__(self, uf='PERNAMBUCO', headless=True, delay_hours=1):
         self.url = 'http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/relatorios/opcoesRelatorio.jsf#'
         self.uf = uf
         self.headless = headless
@@ -29,14 +28,14 @@ class MeiBot:
         except OSError:
             pass
 
-    def _parse_uf(self):
-        with open("uf.json", "r") as f:
-            data = json.load(f)
-            try:
-                uf = data['estado'][self.uf].upper()
-                return uf
-            except KeyError:
-                print('Wrong UF.')
+    def _verify_uf(self, driver):
+        with open("lista de uf.txt", "r") as f:
+            data = f.read()
+            ufs = data.split('\n')[:-1]
+            if self.uf in ufs:
+                return self.uf
+            print('Nome da UF errada.\nUtilize um dos nomes abaixo:\n{}'.format(ufs))
+            driver.close()
 
     def _browser(self):
         fp = webdriver.FirefoxProfile()
@@ -60,7 +59,7 @@ class MeiBot:
     def get_cnae_municipio_data(self):
         self._verify_dir()
         driver = self._browser()
-        uf = self._parse_uf()
+        uf = self._verify_uf(driver)
         try:
 
             # CNAE/MUNICIPIO - browser.find_element_by_link_text('CNAE/Município')
