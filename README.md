@@ -20,4 +20,4 @@ These lines grab a file every 4 hours, containing the total of MEIs per municipa
 >>> mei.get_cnae_municipio_data()
 ```
 
-Take a look at [lista de uf.txt](https://github.com/bernarducs/mei/blob/master/lista%20de%20uf.txt) for uf name list
+Take a look at [lista de uf](https://github.com/bernarducs/mei/blob/master/lista%20de%20uf.txt) for uf name list
