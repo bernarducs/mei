@@ -1,5 +1,5 @@
 """
-a bot that scrap micro entrepreneurs subscriptions data from brazilian IRS
+um bot que scrap inscrições dos micro empreendedores individuais da Receita Federal
 V: 0.0.0.0
 
 """
@@ -36,6 +36,7 @@ class MeiBot:
                 return self.uf
             print('Nome da UF errada.\nUtilize um dos nomes abaixo:\n{}'.format(ufs))
             driver.close()
+            exit()
 
     def _browser(self):
         fp = webdriver.FirefoxProfile()

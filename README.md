@@ -1,23 +1,24 @@
-# Bot Microempreendedor Individual
-a bot that scrap micro entrepreneurs subscriptions data from brazilian IRS
+## Bot Microempreendedor Individual
+Um bot que raspa dados da base de MEIs da Receita Federal
 
-## Attention
+### Atenção
 
-Only with [Firefox browser](https://www.mozilla.org/en-US/firefox/new/)
+Rodando apenas com [Firefox browser](https://www.mozilla.org/en-US/firefox/new/)
 
-### Prerequisites
+### Pré-requisitos
 
-######  Install [geckodriver for Firefox](https://github.com/mozilla/geckodriver/releases)
-###### Install [selenium](https://selenium-python.readthedocs.io/installation.html)
+Instale [geckodriver for Firefox](https://github.com/mozilla/geckodriver/releases)
 
-## Example
+Instale [selenium](https://selenium-python.readthedocs.io/installation.html)
 
-These lines grab a file every 4 hours, containing the total of MEIs per municipality per CNAE
+### Exemplo
+As linhas abaixo pega um arquivo a cada 4 horas de uma UF contendo o total de Meis por município e por CNAE.
 
 ```python
 >>> from meibot import MeiBot
 >>> mei = MeiBot(uf='PARÁ', delay_hours=4)
->>> mei.get_cnae_municipio_data()
+>>> while True:
+>>>     mei.get_cnae_municipio_data()
 ```
 
-Take a look at [lista de uf](https://github.com/bernarducs/mei/blob/master/lista%20de%20uf.txt) for uf name list
+Dê uma olhada na [lista de ufs](https://github.com/bernarducs/mei/blob/master/lista%20de%20uf.txt) for uf name list
