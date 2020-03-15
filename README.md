@@ -11,14 +11,19 @@ Instale [geckodriver for Firefox](https://github.com/mozilla/geckodriver/release
 
 Instale [selenium](https://selenium-python.readthedocs.io/installation.html)
 
-### Exemplo
-As linhas abaixo pega um arquivo a cada 4 horas de uma UF contendo o total de Meis por município e por CNAE.
+### Exemplos
+Extraindo todas UFs por município e CNAE:
 
 ```python
 >>> from meibot import MeiBot
->>> mei = MeiBot(uf='PARÁ', delay_hours=4)
->>> while True:
->>>     mei.get_cnae_municipio_data()
+>>> mei = MeiBot()
+>>> mei.ufs_por_municipio_e_cnae()
+```
+Uma UF específica:
+```python
+>>> from meibot import MeiBot
+>>> mei = MeiBot()
+>>> mei.uf_por_municipio_e_cnae(uf='PARÁ')
 ```
 
-Dê uma olhada na [lista de ufs](https://github.com/bernarducs/mei/blob/master/lista%20de%20uf.txt) for uf name list
+Dê uma olhada na [lista de ufs](https://github.com/bernarducs/mei/blob/master/lista%20de%20uf.txt) 

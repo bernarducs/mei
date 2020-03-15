@@ -1,5 +1,5 @@
 """
-um bot que scrap inscrições dos micro empreendedores individuais da Receita Federal
+a bot that scrap micro entrepreneurs subscriptions data from brazilian IRS
 V: 0.0.0.0
 
 """
@@ -14,29 +14,26 @@ from selenium.common.exceptions import NoSuchElementException, \
 
 class MeiBot:
 
-    def __init__(self, uf='PERNAMBUCO', headless=True, delay_hours=1):
+    def __init__(self, headless=True):
         self.url = 'http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/relatorios/opcoesRelatorio.jsf#'
-        self.uf = uf
         self.headless = headless
-        self.delay_hours = delay_hours
-        self.dir = os.getcwd() + r'\files'
+        self.dir = os.getcwd() + r'/files'
 
     def _verify_dir(self):
         try:
-            os.mkdir(self.dir, 777)
+            os.mkdir(self.dir)
             print('Files folder created at {}. Downloaded files will be there.'.format(self.dir))
         except OSError:
             pass
 
-    def _verify_uf(self, driver):
-        with open("lista de uf.txt", "r") as f:
+    def _verify_uf(self, driver, uf):
+        with open("lista de uf.txt", "r", encoding='latin-1') as f:
             data = f.read()
             ufs = data.split('\n')[:-1]
-            if self.uf in ufs:
-                return self.uf
+            if uf in ufs:
+                return uf
             print('Nome da UF errada.\nUtilize um dos nomes abaixo:\n{}'.format(ufs))
             driver.close()
-            exit()
 
     def _browser(self):
         fp = webdriver.FirefoxProfile()
@@ -57,10 +54,20 @@ class MeiBot:
         print('Connected. ' + self._print_time())
         return driver
 
-    def get_cnae_municipio_data(self):
+    def ufs_por_municipio_e_cnae(self):
+        with open('lista de uf.txt', 'r', encoding='latin-1') as f:
+            file = f.readlines()
+        ufs = [uf[:-1] for uf in file]
+
+        for uf in ufs:
+            self.uf_por_municipio_e_cnae(uf)
+
+    def uf_por_municipio_e_cnae(self, uf='PERNAMBUCO'):
         self._verify_dir()
         driver = self._browser()
-        uf = self._verify_uf(driver)
+        uf = self._verify_uf(driver, uf)
+        print('Extraindo {} por municípios e CNAE.'.format(uf))
+
         try:
 
             # CNAE/MUNICIPIO - browser.find_element_by_link_text('CNAE/Município')
@@ -68,7 +75,7 @@ class MeiBot:
             page.click()
             time.sleep(5)
 
-            # selecting PERNAMBUCO at listbox
+            # selecting UF at listbox
             el = driver.find_element_by_xpath('//*[@id="form:uf"]')
             for option in el.find_elements_by_tag_name('option'):
                 if option.text == uf:
@@ -92,7 +99,7 @@ class MeiBot:
             time.sleep(10)
             print('Table downloaded. ' + self._print_time())
 
-            self._rename_file()
+            self._rename_file(uf)
 
         except (WebDriverException, NoSuchElementException, NoSuchWindowException) as e:
             print(e)
@@ -100,12 +107,12 @@ class MeiBot:
             driver.close()
             print('Browser closed. ' + self._print_time())
 
-        self._delay(self.delay_hours)
-
-    def _rename_file(self):
+    def _rename_file(self, uf):
         try:
-            file = self.dir + r'\relatorio_mei.csv'
-            new_file = self.dir + r'\mei_cnae_municipios_' + self._print_time(now=False) + '.csv'
+            file = self.dir + r'/relatorio_mei.csv'
+            new_file = r'{}/{}_cnae_e_municipios_{}.csv'.format(
+                self.dir, uf, self._print_time(now=False)
+            )
             os.rename(file, new_file)
             print('File renamed ' + self._print_time())
         except FileExistsError as e:
@@ -124,12 +131,8 @@ class MeiBot:
         ptime = '{:04d}{:02d}{:02d}'.format(timestamp.tm_year, timestamp.tm_mon, timestamp.tm_mday)
         return ptime
 
-    def _delay(self, hour):
-        print('Getting bed. Comin get to work back in {} hour(s). '.format(hour))
-        return time.sleep(60 * 60 * hour)
-
     def _remove_garbage_files(self):
         files = os.listdir(self.dir)
         for file in files:
             if not file[:8] == 'mei_cnae':
-                os.remove(self.dir + '\\' + file)
+                os.remove(self.dir + '/' + file)
