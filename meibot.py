@@ -92,11 +92,11 @@ class MeiBot:
             time.sleep(5)
 
             driver.find_element_by_xpath('//*[@id="form:botaoConsultar"]').click()
-            time.sleep(20)
+            time.sleep(30)
             print('Query done. ' + self._print_time())
 
             driver.find_element_by_xpath('//*[@id="form:botaoExportarCsv"]').click()
-            time.sleep(10)
+            time.sleep(20)
             print('Table downloaded. ' + self._print_time())
 
             self._rename_file(uf)
