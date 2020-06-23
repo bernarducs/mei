@@ -17,14 +17,13 @@ class MeiBot:
     def __init__(self, headless=True):
         self.url = 'http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/relatorios/opcoesRelatorio.jsf#'
         self.headless = headless
-        self.dir = os.getcwd() + r'/files'
+        self.files_dir = os.path.join(os.getcwd(), 'files')
 
     def _verify_dir(self):
-        try:
-            os.mkdir(self.dir)
-            print('Files folder created at {}. Downloaded files will be there.'.format(self.dir))
-        except OSError:
-            pass
+        name_folder = 'files'
+        if not os.path.exists(name_folder):
+            os.mkdir('files')
+            print(f'Arquivos baixados ficarão na pasta {name_folder}.')
 
     def _verify_uf(self, driver, uf):
         with open("lista de uf.txt", "r", encoding='latin-1') as f:
@@ -39,7 +38,7 @@ class MeiBot:
         fp = webdriver.FirefoxProfile()
         fp.set_preference("browser.download.folderList", 2)
         fp.set_preference("browser.download.manager.showWhenStarting", False)
-        fp.set_preference("browser.download.dir", self.dir)
+        fp.set_preference("browser.download.dir", self.files_dir)
         fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/csv")
         fp.set_preference("dom.disable_deforeunload", True)
 
@@ -64,6 +63,7 @@ class MeiBot:
 
     def uf_por_municipio_e_cnae(self, uf='PERNAMBUCO'):
         self._verify_dir()
+        self._remove_garbage_files()
         driver = self._browser()
         uf = self._verify_uf(driver, uf)
         print('Extraindo {} por municípios e CNAE.'.format(uf))
@@ -108,18 +108,15 @@ class MeiBot:
             print('Browser closed. ' + self._print_time())
 
     def _rename_file(self, uf):
-        try:
-            file = self.dir + r'/relatorio_mei.csv'
-            new_file = r'{}/{}_cnae_e_municipios_{}.csv'.format(
-                self.dir, uf, self._print_time(now=False)
+        file = r'relatorio_mei.csv'
+        if file in os.listdir(self.files_dir):
+            old_file = os.path.join(self.files_dir, file)
+            new_file = r'{}_cnae_e_municipios_{}.csv'.format(
+                uf, self._print_time(now=False)
             )
-            os.rename(file, new_file)
-            print('File renamed ' + self._print_time())
-        except FileExistsError as e:
-            print(e)
-            self._remove_garbage_files()
-        except FileNotFoundError as e:
-            print(e)
+            new_file = os.path.join(self.files_dir, new_file)
+            os.rename(old_file, new_file)
+            print(f'File renamed to {new_file}' + self._print_time())
 
     def _print_time(self, now=True):
         timestamp = time.localtime(time.time())
@@ -132,7 +129,6 @@ class MeiBot:
         return ptime
 
     def _remove_garbage_files(self):
-        files = os.listdir(self.dir)
-        for file in files:
+        for file in os.listdir(self.files_dir):
             if not file[:8] == 'mei_cnae':
-                os.remove(self.dir + '/' + file)
+                os.remove(os.path.join(self.files_dir, file))
