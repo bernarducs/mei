@@ -58,9 +58,9 @@ def renomeia_arquivo(name_folder, uf):
         new_file = os.path.join(name_folder, new_file)
         try:
             os.rename(old_file, new_file)
-            print(f"File renamed to {new_file} " + print_timestamp())
+            print(f"Arquivo renomeado para {new_file} " + print_timestamp())
         except FileExistsError:
-            print("File already exists.")
+            print("Arquivo já existe.")
 
 
 def verifica_arquivo(name_folder, uf):
@@ -76,4 +76,4 @@ def exporta_csv(driver):
     xpath_btn_exportar = '//*[@id="form:botaoExportarCsv"]'
     driver.find_element_by_xpath(xpath_btn_exportar).click()
     time.sleep(10)
-    print('Download.', print_timestamp())
+    print('Download concluído.', print_timestamp())

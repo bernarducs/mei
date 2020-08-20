@@ -1,6 +1,7 @@
 import time
 from selenium.webdriver.common.keys import Keys
 from helpers import retorna_tabela
+from print_time import print_timestamp
 
 
 def municipio_cnae(driver, uf="PERNAMBUCO"):
@@ -12,12 +13,14 @@ def municipio_cnae(driver, uf="PERNAMBUCO"):
     xpath_btn_consulta = '//*[@id="form:botaoConsultar"]'
     xpath_tab_completa = '//*[@id="form:j_id62"]'
 
+    print(f"Extraindo {uf}.", print_timestamp())
+
     # CNAE/MUNICIPIO
     page = driver.find_element_by_xpath(xpath_page)
     page.click()
 
     # selecionando UF na listbox
-    time.sleep(2)
+    time.sleep(5)
     el = driver.find_element_by_xpath(xpath_listbox)
     for option in el.find_elements_by_tag_name('option'):
         if option.text == uf:
