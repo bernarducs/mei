@@ -1,7 +1,4 @@
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
-from print_time import print_timestamp
-from helpers import retorna_xpath
 
 
 def config(path_folder: str, headless: bool):
@@ -19,21 +16,4 @@ def config(path_folder: str, headless: bool):
 
     driver = webdriver.Firefox(fp, options=options)
 
-    return driver
-
-
-def init_browser(files_dir: str, headless: bool):
-    url = "http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/relatorios/opcoesRelatorio.jsf#"
-    xpath = "/html/body/table/tbody/tr[2]/td/form/div/div/div[1]/p"
-
-    while True:
-        driver = config(files_dir, headless=headless)
-        try:
-            driver.get(url)
-            print('Browser iniciado. ' + print_timestamp())
-            retorna_xpath(driver, 15, 5, xpath)
-            break
-        except TimeoutException as e:
-            driver.quit()
-            print(e)
     return driver
