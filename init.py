@@ -4,7 +4,7 @@ from print_time import print_timestamp
 from helpers import retorna_xpath
 
 
-def config(path_folder, headless=True):
+def config(path_folder: str, headless: bool):
     fp = webdriver.FirefoxProfile()
     fp.set_preference("browser.download.folderList", 2)
     fp.set_preference("browser.download.manager.showWhenStarting", False)
@@ -22,9 +22,9 @@ def config(path_folder, headless=True):
     return driver
 
 
-def init_browser(files_dir, headless=True):
-    url = 'http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/relatorios/opcoesRelatorio.jsf#'
-    xpath = '/html/body/table/tbody/tr[2]/td/form/div/div/div[1]/p'
+def init_browser(files_dir: str, headless: bool):
+    url = "http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/relatorios/opcoesRelatorio.jsf#"
+    xpath = "/html/body/table/tbody/tr[2]/td/form/div/div/div[1]/p"
 
     while True:
         driver = config(files_dir, headless=headless)
@@ -36,5 +36,4 @@ def init_browser(files_dir, headless=True):
         except TimeoutException as e:
             driver.quit()
             print(e)
-
     return driver

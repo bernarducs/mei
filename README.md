@@ -14,16 +14,15 @@ Instale [selenium](https://selenium-python.readthedocs.io/installation.html)
 ### Exemplos
 *Abra o console python*
 
-Extraindo todas UFs por município e CNAE:
+Extraindo todas UFs por município e CNAE (e armazenando na pasta 'files'):
 
 ```python
->>> from main import ufs_por_municipio_cnae
->>> ufs_por_municipio_e_cnae()
+>>> import bot
+>>> bot.ufs_por_municipio_e_cnae('files')
 ```
 Uma UF específica:
 ```python
->>> from main import uf_por_municipio_e_cnae
->>> uf_por_municipio_e_cnae(uf='PARÁ')
+>>> bot.uf_por_municipio_e_cnae('files', uf='PARÁ')
 ```
 
 Dê uma olhada na [lista de ufs](https://github.com/bernarducs/mei/blob/master/lista%20de%20uf.txt) 
