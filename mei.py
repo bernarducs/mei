@@ -53,9 +53,7 @@ class Mei:
         file = r'relatorio_mei.csv'
         if file in os.listdir(files_path):
             old_file = os.path.join(files_path, file)
-            new_file = r'{}_cnae_e_municipios_{}.csv'.format(
-                uf, print_timestamp(now=False)
-            )
+            new_file = self.nome_arquivo(uf)
             new_file = os.path.join(files_path, new_file)
             try:
                 os.rename(old_file, new_file)
@@ -69,12 +67,15 @@ class Mei:
             os.mkdir(files_path)
             print(f"Arquivos baixados ficarão na pasta {files_path}.")
         uf = self.uf
-        data = print_timestamp(now=False)
-        name = f"{uf}_cnae_e_municipios_{data}.csv"
+        name = self.nome_arquivo(uf)
         if name in os.listdir(files_path):
             return name
         else:
             return False
+
+    def nome_arquivo(self, uf):
+        data = print_timestamp(now=False)
+        return f"{uf}_cnae_e_municipios_{data}.csv"
 
     def exporta_csv(self):
         driver = self.driver
@@ -150,3 +151,18 @@ class MeiCnaeMunicipio(Mei):
                 print("Não foi possível carregar os municípios.")
                 return False
         return True
+
+
+class MeiCnaeSexoUF(Mei):
+    xpath_page = '/html/body/table/tbody/tr[2]/td/form/div/div/div[1]/ul/li[7]/a'
+    xpath_listbox = '//*[@id="form:uf"]'
+    xpath_municipios = '//*[@id="form:municipioUF"]'
+    xpath_btn_consulta = '//*[@id="form:botaoConsultar"]'
+    xpath_tab_completa = '//*[@id="form:botaoExportarCsv"]'
+
+    def __init__(self, driver, files_path, uf):
+        super().__init__(driver, files_path, uf)
+
+    def nome_arquivo(self, uf):
+        data = print_timestamp(now=False)
+        return f"{uf}_cnae_e_sexo_{data}.csv"
