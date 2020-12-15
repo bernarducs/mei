@@ -93,6 +93,7 @@ class Mei:
             try:
                 driver.get(url)
                 print('Browser iniciado. ' + print_timestamp())
+                print('Extraindo ' + self.uf + '...')
                 self._retorna_xpath(driver, 15, 5, xpath)
                 break
             except TimeoutException as e:
