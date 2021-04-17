@@ -1,4 +1,5 @@
 import os
+import fire
 
 from selenium.common.exceptions import NoSuchElementException, \
     WebDriverException, NoSuchWindowException
@@ -78,3 +79,7 @@ def uf_por_sexo_cnae(uf="PERNAMBUCO", pasta="arquivos", invisivel=True):
             print("Não foi possível exportar o arquivo.")
     else:
         print(f"O arquivo {file} já existe.")
+
+
+if __name__ == '__main__':
+    fire.Fire()

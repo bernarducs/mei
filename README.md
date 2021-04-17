@@ -17,25 +17,25 @@ Instale [geckodriver for Firefox](https://github.com/mozilla/geckodriver/release
 Instale [selenium](https://selenium-python.readthedocs.io/installation.html)
 
 ### Exemplos
-*Abra o console python*
 
-Extraindo todas UFs por município e CNAE (e armazenando na pasta 'arquivos'):
+Extraindo todas UFs por município e CNAE (cria e armazena numa subpasta "arquivos"):
 
-```python
->>> import bot
->>> bot.ufs_por_municipio_e_cnae('arquivos')
+```console
+python bot.py ufs_por_municipio_cnae
 ```
+
 Uma UF específica:
-```python
->>> bot.uf_por_municipio_e_cnae('arquivos', uf='PARÁ')
+```console
+python bot.py uf_por_municipio_e_cnae --uf="PARÁ"
 ```
-Todas as UF por sexo e cnae:
-```python
->>> bot.ufs_por_sexo_cnae('arquivos')
-```
-Rodando o comando anterior sem o modo headless:
-```python
->>> bot.ufs_por_sexo_cnae('arquivos', headless=False)
+######  *Dê uma olhada na [lista de ufs](https://github.com/bernarducs/mei/blob/master/lista%20de%20uf.txt)*
+
+Todas as UF por sexo e cnae, determinado uma pasta para donwload (windows):
+```console
+python bot.py uf_por_sexo_e_cnae --pasta="C\:Documents\bot_files"
 ```
 
-Dê uma olhada na [lista de ufs](https://github.com/bernarducs/mei/blob/master/lista%20de%20uf.txt) 
+Rodando o comando anterior sem o modo headless:
+```console
+python bot.py uf_por_sexo_e_cnae --headless=False
+``` 
